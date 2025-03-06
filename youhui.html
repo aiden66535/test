@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优惠活动</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .tab-active {
+            color: #000;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background-color: #000;
+            border-radius: 3px;
+        }
+        
+        .activity-card {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+        
+        .activity-card img.card-image {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+        
+        .badge-corner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            width: 36px;
+            height: 16px;
+        }
+        
+        .card-content {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        
+        .card-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: #333;
+        }
+        
+        .card-desc {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .chip {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-right: 5px;
+            background-color: rgba(0,0,0,0.05);
+            color: #666;
+        }
+        
+        .countdown {
+            background: rgba(0,0,0,0.6);
+            color: white;
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            padding: 4px 10px;
+            border-radius: 20px 0 0 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .glow-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right, 
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 6s infinite;
+        }
+        
+        @keyframes shine {
+            0% {transform: translateX(-100%) rotate(30deg);}
+            20%, 100% {transform: translateX(100%) rotate(30deg);}
+        }
+        
+        .border-gradient {
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+        
+        .border-gradient::before {
+            content: '';
+            position: absolute;
+            top: -2px; right: -2px; bottom: -2px; left: -2px;
+            background: linear-gradient(45deg, #ff6b81, #ffa502, #70a1ff, #8e44ad);
+            border-radius: inherit;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="bg-white fixed top-0 left-0 right-0 z-10">
+        <div class="flex justify-between items-center px-4 py-3">
+            <h1 class="text-xl font-bold">优惠活动</h1>
+            <div class="flex items-center space-x-4">
+                <button class="w-8 h-8 flex items-center justify-center text-gray-700">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <button class="w-8 h-8 flex items-center justify-center text-gray-700">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 选项卡导航 -->
+        <div class="flex justify-around text-gray-500 px-2 py-3 border-b border-gray-100">
+            <div class="px-4 py-1">全部</div>
+            <div class="px-4 py-1 tab-active">限时活动</div>
+            <div class="px-4 py-1">新人首存</div>
+            <div class="px-4 py-1">日常活动</div>
+        </div>
+    </header>
+    
+    <!-- 内容区域，增加了顶部间距 -->
+    <main class="mt-32 pt-4 px-4 pb-20">
+        <!-- 9U周年活动卡片 - 使用本地图片 -->
+        <div class="activity-card glow-effect">
+            <img src="zuire-jiaobiao.png" alt="最热" class="badge-corner">
+            <img src="zhounian.jpg" alt="9U周年感恩礼" class="card-image">
+            <div class="countdown">
+                <i class="fas fa-clock mr-1"></i> 剩余: 23:59:59
+            </div>
+            <div class="card-content">
+                <div class="card-title">9U周年感恩礼</div>
+                <div class="card-desc">资深老牌，每笔存款加赠3%，一倍流水即可提款</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-gift text-yellow-500 mr-1"></i> 体验金</span>
+                    <span class="chip"><i class="fas fa-percentage text-blue-500 mr-1"></i> 返水高</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 首存活动卡片 -->
+        <div class="activity-card border-gradient">
+            <img src="xinren-jiaobiao.png" alt="新人" class="badge-corner">
+            <img src="usdtfuli.png" alt="首存送礼" class="card-image">
+            <div class="card-content">
+                <div class="card-title">首存送礼 最高1888元</div>
+                <div class="card-desc">新用户首次存款，享受100%额外奖励</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-user text-green-500 mr-1"></i> 新人专享</span>
+                    <span class="chip"><i class="fas fa-coins text-yellow-500 mr-1"></i> 高额彩金</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- USDT存提卡片 (新增) -->
+        <div class="activity-card">
+            <img src="richang-jiaobiao.png" alt="日常" class="badge-corner">
+            <img src="usdt.jpg" alt="USDT存提" class="card-image">
+            <div class="card-content">
+                <div class="card-title">USDT存提 秒到账</div>
+                <div class="card-desc">支持多链USDT存提，存款立享1%额外赠送</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-bolt text-yellow-500 mr-1"></i> 秒到账</span>
+                    <span class="chip"><i class="fas fa-shield-alt text-blue-500 mr-1"></i> 安全稳定</span>
+                    <span class="chip"><i class="fas fa-plus-circle text-green-500 mr-1"></i> 额外赠送</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 联赛卡片 -->
+        <div class="activity-card">
+            <img src="richang-jiaobiao.png" alt="日常" class="badge-corner">
+            <img src="liansai.png" alt="每日返水无上限" class="card-image">
+            <div class="card-content">
+                <div class="card-title">游戏返水 无上限</div>
+                <div class="card-desc">所有游戏投注即可享受最高2%返水，无需申请自动派发</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-sync-alt text-blue-500 mr-1"></i> 日返水</span>
+                    <span class="chip"><i class="fas fa-infinity text-purple-500 mr-1"></i> 无上限</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 返水活动卡片 -->
+        <div class="activity-card">
+            <img src="richang-jiaobiao.png" alt="日常" class="badge-corner">
+            <img src="https://via.placeholder.com/600x300/1e3799/fff?text=每日返水无上限" alt="每日返水无上限" class="card-image">
+            <div class="card-content">
+                <div class="card-title">游戏返水 无上限</div>
+                <div class="card-desc">所有游戏投注即可享受最高2%返水，无需申请自动派发</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-sync-alt text-blue-500 mr-1"></i> 日返水</span>
+                    <span class="chip"><i class="fas fa-infinity text-purple-500 mr-1"></i> 无上限</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- VIP特权卡片 -->
+        <div class="activity-card">
+            <img src="richang-jiaobiao.png" alt="日常" class="badge-corner">
+            <img src="https://via.placeholder.com/600x300/2f3542/fff?text=VIP特权" alt="VIP特权" class="card-image">
+            <div class="card-content">
+                <div class="card-title">VIP专属特权</div>
+                <div class="card-desc">晋升VIP享受更高存款优惠、专属客服、生日礼金</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-crown text-yellow-500 mr-1"></i> 特权</span>
+                    <span class="chip"><i class="fas fa-gem text-pink-500 mr-1"></i> 高返水</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 限时活动卡片 -->
+        <div class="activity-card">
+            <img src="zuire-jiaobiao.png" alt="最热" class="badge-corner">
+            <img src="https://via.placeholder.com/600x300/6a89cc/fff?text=周末加码" alt="周末加码" class="card-image">
+            <div class="countdown">
+                <i class="fas fa-clock mr-1"></i> 剩余: 48:00:00
+            </div>
+            <div class="card-content">
+                <div class="card-title">周末加码 再送18%</div>
+                <div class="card-desc">每周六日存款，额外再送18%，最高888元</div>
+                <div class="mt-2">
+                    <span class="chip"><i class="fas fa-calendar-alt text-red-500 mr-1"></i> 周末专享</span>
+                    <span class="chip"><i class="fas fa-bolt text-yellow-500 mr-1"></i> 加码</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
