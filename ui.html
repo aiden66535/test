@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP会员中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#ff6902',
+                            DEFAULT: '#ff5912',
+                            dark: '#ff4922',
+                        },
+                        gold: {
+                            light: '#f5d485',
+                            DEFAULT: '#e6b94d',
+                            dark: '#c9972a',
+                        },
+                        bg: {
+                            light: '#f9f4f0',
+                            DEFAULT: '#f5ece6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f5ece6;
+            color: #333;
+        }
+        .light-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .progress-bar-container {
+            height: 6px;
+            border-radius: 3px;
+            background: #f0f0f0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6902 0%, #ff4922 100%);
+            border-radius: 3px;
+        }
+        .vip-badge {
+            background: linear-gradient(90deg, #ff6902 0%, #ff4922 100%);
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: white;
+        }
+        .gradient-button {
+            background: linear-gradient(90deg, #ff6902 0%, #ff4922 100%);
+            border-radius: 8px;
+            color: white;
+            transition: all 0.2s;
+        }
+        .gradient-button:active {
+            transform: translateY(1px);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #f8e9b5, #d4af37, #f8e9b5);
+        }
+        .card-pattern {
+            background-image: radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 25%),
+                            radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 20%);
+        }
+        .vip-level-btn {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .vip-level-btn.active {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-bg-light">
+    <!-- 顶部导航栏 -->
+    <div class="bg-white relative">
+        <div class="max-w-md mx-auto px-4 py-4 flex justify-center items-center relative">
+            <div class="absolute left-4">
+                <i class="fas fa-chevron-left text-gray-700"></i>
+            </div>
+            <div class="text-lg font-medium text-center text-gray-900">VIP会员中心</div>
+        </div>
+        <div class="h-[1px] bg-gray-100"></div>
+    </div>
+
+    <div class="max-w-md mx-auto px-4 pt-4 pb-6">
+        <!-- 用户信息卡片 -->
+        <div class="light-card mb-4">
+            <div class="flex items-center p-4">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=120&h=120&q=80" 
+                         class="w-16 h-16 rounded-full object-cover border border-gray-200" alt="用户头像">
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary-light rounded-full flex items-center justify-center text-white text-xs border border-white">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <div class="flex items-baseline justify-between">
+                        <h1 class="text-lg font-bold text-gray-900">水云</h1>
+                        <div class="text-sm text-gray-500 flex items-center">
+                            <span>主页</span>
+                            <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-1">
+                        <div class="vip-badge text-xs flex items-center">
+                            <i class="fas fa-gem mr-1"></i> LV.0
+                        </div>
+                        <div class="ml-2 text-xs text-gray-500">UID: 40133</div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">已加入 10 天</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP等级与特权 -->
+        <div class="light-card mb-4 overflow-hidden">
+            <!-- 重新设计的VIP卡片 -->
+            <div class="bg-white p-5 relative">
+                <!-- 顶部彩色条纹 -->
+                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ff6902] to-[#ff4922]"></div>
+                
+                <!-- 移动累计数据到这里，并调整大小 -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-[#f9f9f9] p-2 rounded-lg">
+                        <div class="text-xs font-medium text-gray-500 mb-0.5">累计存款</div>
+                        <div class="text-base font-bold text-primary-light">¥0</div>
+                    </div>
+                    <div class="bg-[#f9f9f9] p-2 rounded-lg">
+                        <div class="text-xs font-medium text-gray-500 mb-0.5">累计流水</div>
+                        <div class="text-base font-bold text-primary-light">¥0</div>
+                    </div>
+                </div>
+                
+                <!-- 卡片内容 -->
+                <div class="flex items-center mb-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#ff8c02] to-[#ff4922] flex items-center justify-center text-white">
+                            <span class="font-bold text-lg">VIP0</span>
+                        </div>
+                        <div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white flex items-center justify-center">
+                            <i class="fas fa-crown text-[#ff5912] text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <div class="text-gray-800 font-bold text-lg">初级会员</div>
+                        <div class="text-gray-500 text-sm">尊享会员特权</div>
+                    </div>
+                </div>
+                
+                <!-- 调整为两个进度条：充值和流水 -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-center text-xs mb-1.5">
+                        <span class="text-gray-500">充值进度</span>
+                        <span class="text-primary-light font-medium">0 / 1,000</span>
+                    </div>
+                    <div class="progress-bar-container mb-2">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center text-xs mb-1.5">
+                        <span class="text-gray-500">流水进度</span>
+                        <span class="text-primary-light font-medium">0 / 3,000</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="text-xs text-gray-700 p-3 rounded-lg bg-[#fff8f2] border border-[#ffedd5]">
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle text-primary-light mr-1.5"></i>
+                        <span>距离VIP1还需充值 1,000 元或流水 3,000 元</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 新的VIP等级标题 -->
+            <div class="p-4 border-b border-gray-100">
+                <h2 class="text-base font-bold text-gray-800">VIP等级</h2>
+            </div>
+            
+            <!-- VIP等级选择 -->
+            <div class="p-4">
+                <div class="overflow-x-auto pb-1">
+                    <div class="inline-flex space-x-2 min-w-full">
+                        <div class="flex flex-col items-center vip-level-btn active" data-vip="0">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-[#ff8c02] to-[#ff4922] flex items-center justify-center text-white text-xs mb-1">VIP0</div>
+                            <div class="w-full h-1 bg-primary-light"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="1">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP1</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="2">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP2</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="3">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP3</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="4">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP4</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="5">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP5</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="6">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP6</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                        <div class="flex flex-col items-center vip-level-btn" data-vip="7">
+                            <div class="w-10 h-10 rounded-full bg-[#f0f0f0] flex items-center justify-center text-gray-400 text-xs mb-1">VIP7</div>
+                            <div class="w-full h-1 bg-[#f0f0f0]"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-xs text-gray-500 mt-2">
+                    <p>• 充值和流水任意达标即可升级</p>
+                    <p>• VIP等级每月1号重置，保级规则请联系客服</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP福利 - 根据选择的VIP等级动态显示 -->
+        <div class="light-card mb-4">
+            <div class="p-4">
+                <h2 class="text-base font-bold text-gray-800 mb-2 flex items-center justify-between">
+                    <span>VIP福利</span>
+                    <span id="vip-level-display" class="text-sm text-primary-light">VIP0 福利</span>
+                </h2>
+                
+                <!-- 动态显示的VIP福利内容 -->
+                <div id="vip-benefits-container">
+                    <!-- VIP0福利内容 -->
+                    <div class="vip-benefits" data-vip="0">
+                        <!-- 晋级礼金 -->
+                        <div class="flex items-center justify-between border border-gray-100 p-3 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                    <i class="fas fa-level-up-alt"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-gray-800 flex items-center">
+                                        晋级礼金
+                                        <span class="ml-2 text-xs font-bold text-primary-light">¥10</span>
+                                    </h3>
+                                    <p class="text-xs text-gray-500">升级获得对应VIP等级礼金</p>
+                                </div>
+                            </div>
+                            <button class="gradient-button px-3 py-1.5 text-xs font-medium">
+                                立即领取
+                            </button>
+                        </div>
+                        
+                        <!-- 每月红包 -->
+                        <div class="flex items-center justify-between border border-gray-100 p-3 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-gray-800 flex items-center">
+                                        每月红包
+                                        <span class="ml-2 text-xs font-bold text-primary-light">¥20</span>
+                                    </h3>
+                                    <p class="text-xs text-gray-500">每月可领取一次VIP专属红包</p>
+                                </div>
+                            </div>
+                            <button class="gradient-button px-3 py-1.5 text-xs font-medium">
+                                立即领取
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- VIP1福利内容 -->
+                    <div class="vip-benefits hidden" data-vip="1">
+                        <!-- 晋级礼金 -->
+                        <div class="flex items-center justify-between border border-gray-100 p-3 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                    <i class="fas fa-level-up-alt"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-gray-800 flex items-center">
+                                        晋级礼金
+                                        <span class="ml-2 text-xs font-bold text-primary-light">¥50</span>
+                                    </h3>
+                                    <p class="text-xs text-gray-500">升级获得对应VIP等级礼金</p>
+                                </div>
+                            </div>
+                            <button class="gradient-button px-3 py-1.5 text-xs font-medium">
+                                立即领取
+                            </button>
+                        </div>
+                        
+                        <!-- 每月红包 -->
+                        <div class="flex items-center justify-between border border-gray-100 p-3 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-gray-800 flex items-center">
+                                        每月红包
+                                        <span class="ml-2 text-xs font-bold text-primary-light">¥100</span>
+                                    </h3>
+                                    <p class="text-xs text-gray-500">每月可领取一次VIP专属红包</p>
+                                </div>
+                            </div>
+                            <button class="gradient-button px-3 py-1.5 text-xs font-medium">
+                                立即领取
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- VIP2福利内容 -->
+                    <div class="vip-benefits hidden" data-vip="2">
+                        <!-- 晋级礼金 -->
+                        <div class="flex items-center justify-between border border-gray-100 p-3 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                    <i class="fas fa-level-up-alt"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-gray-800 flex items-center">
+                                        晋级礼金
+                                        <span class="ml-2 text-xs font-bold text-primary-light">¥150</span>
+                                    </h3>
+                                    <p class="text-xs text-gray-500">升级获得对应VIP等级礼金</p>
+                                </div>
+                            </div>
+                            <button class="gradient-button px-3 py-1.5 text-xs font-medium">
+                                立即领取
+                            </button>
+                        </div>
+                        
+                        <!-- 每月红包 -->
+                        <div class="flex items-center justify-between border border-gray-100 p-3 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-gray-800 flex items-center">
+                                        每月红包
+                                        <span class="ml-2 text-xs font-bold text-primary-light">¥200</span>
+                                    </h3>
+                                    <p class="text-xs text-gray-500">每月可领取一次VIP专属红包</p>
+                                </div>
+                            </div>
+                            <button class="gradient-button px-3 py-1.5 text-xs font-medium">
+                                立即领取
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 返水优惠 - 始终显示 -->
+                    <a href="rebate.html" class="flex items-center justify-between border border-gray-100 p-3 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-[#ff6902] bg-opacity-10 flex items-center justify-center text-primary-light">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-800">返水优惠</h3>
+                                <p class="text-xs text-gray-500">查看不同游戏类型的返水比例</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- VIP特权展示 - 黑色和金色配色 -->
+        <div class="light-card mb-4 overflow-hidden">
+            <div class="bg-[#1e1e1e] p-4">
+                <h2 class="text-base font-bold text-gold-light mb-4 flex items-center">
+                    <i class="fas fa-crown text-gold-light mr-2"></i>
+                    尊享特权
+                </h2>
+                
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-black bg-opacity-40 border border-gold-light flex items-center justify-center mb-1">
+                            <i class="fas fa-headset text-gold-light"></i>
+                        </div>
+                        <span class="text-xs text-gray-300">专属客服</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-black bg-opacity-40 border border-gold-light flex items-center justify-center mb-1">
+                            <i class="fas fa-undo text-gold-light"></i>
+                        </div>
+                        <span class="text-xs text-gray-300">返水加成</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-black bg-opacity-40 border border-gold-light flex items-center justify-center mb-1">
+                            <i class="fas fa-bolt text-gold-light"></i>
+                        </div>
+                        <span class="text-xs text-gray-300">提款加速</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-black bg-opacity-40 border border-gold-light flex items-center justify-center mb-1">
+                            <i class="fas fa-coins text-gold-light"></i>
+                        </div>
+                        <span class="text-xs text-gray-300">存款加送</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部信息 -->
+        <div class="text-xs text-gray-500 px-4 mb-4">
+            <p>* VIP等级和福利最终解释权归平台所有</p>
+        </div>
+    </div>
+    
+    <!-- 添加JavaScript代码实现VIP等级点击交互 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const vipLevelBtns = document.querySelectorAll('.vip-level-btn');
+            const vipBenefits = document.querySelectorAll('.vip-benefits');
+            const vipLevelDisplay = document.getElementById('vip-level-display');
+            
+            vipLevelBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 获取点击的VIP等级
+                    const vipLevel = this.getAttribute('data-vip');
+                    
+                    // 移除所有按钮的活跃状态
+                    vipLevelBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.querySelector('div:last-child').classList.remove('bg-primary-light');
+                        b.querySelector('div:last-child').classList.add('bg-[#f0f0f0]');
+                        
+                        const circle = b.querySelector('div:first-child');
+                        circle.classList.remove('bg-gradient-to-r', 'from-[#ff8c02]', 'to-[#ff4922]');
+                        circle.classList.add('bg-[#f0f0f0]');
+                        
+                        const text = circle.querySelector('span') || circle.textContent;
+                        circle.classList.remove('text-white');
+                        circle.classList.add('text-gray-400');
+                    });
+                    
+                    // 为当前按钮添加活跃状态
+                    this.classList.add('active');
+                    this.querySelector('div:last-child').classList.remove('bg-[#f0f0f0]');
+                    this.querySelector('div:last-child').classList.add('bg-primary-light');
+                    
+                    const circle = this.querySelector('div:first-child');
+                    circle.classList.remove('bg-[#f0f0f0]');
+                    circle.classList.add('bg-gradient-to-r', 'from-[#ff8c02]', 'to-[#ff4922]');
+                    
+                    const text = circle.querySelector('span') || circle.textContent;
+                    circle.classList.remove('text-gray-400');
+                    circle.classList.add('text-white');
+                    
+                    // 隐藏所有福利内容
+                    vipBenefits.forEach(benefit => {
+                        benefit.classList.add('hidden');
+                    });
+                    
+                    // 显示对应VIP等级的福利
+                    const selectedBenefit = document.querySelector(`.vip-benefits[data-vip="${vipLevel}"]`);
+                    if (selectedBenefit) {
+                        selectedBenefit.classList.remove('hidden');
+                        vipLevelDisplay.textContent = `VIP${vipLevel} 福利`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
