@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返水比例查询</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#ff6902',
+                            DEFAULT: '#ff5912',
+                            dark: '#ff4922',
+                        },
+                        gold: {
+                            light: '#f5d485',
+                            DEFAULT: '#e6b94d',
+                            dark: '#c9972a',
+                        },
+                        bg: {
+                            light: '#f9f4f0',
+                            DEFAULT: '#f5ece6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f5ece6;
+            color: #333;
+        }
+        .light-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #ff6902 #f0f0f0;
+        }
+        .table-wrapper::-webkit-scrollbar {
+            height: 6px;
+        }
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #ff6902 0%, #ff4922 100%);
+            border-radius: 3px;
+        }
+        th, td {
+            white-space: nowrap;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: #fff;
+        }
+        .first-col {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background-color: #fff;
+        }
+        .header-first-col {
+            position: sticky;
+            left: 0;
+            top: 0;
+            z-index: 3;
+            background-color: #fff;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff5912;
+        }
+        .vip-badge {
+            background: linear-gradient(90deg, #ff6902 0%, #ff4922 100%);
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: white;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        .vip-badge .fas {
+            margin-right: 3px;
+        }
+        .even-row {
+            background-color: #fffefc;
+        }
+        .my-level {
+            background-color: #fff8f2;
+        }
+    </style>
+</head>
+<body class="bg-bg-light pb-16">
+    <div class="max-w-md mx-auto px-4 pt-4">
+        <!-- 顶部导航栏 -->
+        <div class="bg-white px-4 py-3 flex justify-between items-center mb-4">
+            <div class="text-xl font-bold">返水比例</div>
+            <a href="index.html" class="w-8 h-8 flex items-center justify-center">
+                <i class="fas fa-chevron-left text-gray-600"></i>
+            </a>
+        </div>
+
+        <!-- 返水说明卡片 - 修改为与VIP首页风格一致 -->
+        <div class="light-card mb-4 overflow-hidden">
+            <!-- 顶部彩色条纹 -->
+            <div class="h-1.5 bg-gradient-to-r from-[#ff6902] to-[#ff4922]"></div>
+            
+            <div class="p-4">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-percentage text-primary-light mr-2"></i>
+                    返水优惠说明
+                </h2>
+                <p class="text-sm mt-1 text-gray-500">不同游戏类型和VIP等级享受不同返水比例</p>
+            
+                <div class="mt-4 text-sm text-gray-600">
+                    <p>• 返水比例根据VIP等级提升而增加</p>
+                    <p>• 返水金额 = 游戏投注额 × 返水比例</p>
+                    <p>• 返水时间：每日12:00自动结算前一日返水</p>
+                    <p>• 满10元自动派发，可在【账户明细】查看</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 返水比例表格 -->
+        <div class="light-card mb-4 overflow-hidden">
+            <div class="p-4 border-b border-gray-100">
+                <h3 class="text-base font-bold text-gray-800">返水比例表</h3>
+                <p class="text-xs text-gray-500 mt-1">横向滑动查看更多游戏类型</p>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-100">
+                            <th class="header-first-col border-r border-gray-100 bg-gray-50">VIP等级</th>
+                            <th class="border-r border-gray-100">JDB电子</th>
+                            <th class="border-r border-gray-100">AG真人</th>
+                            <th class="border-r border-gray-100">开元棋牌</th>
+                            <th class="border-r border-gray-100">BBIN视讯</th>
+                            <th class="border-r border-gray-100">OB体育</th>
+                            <th class="border-r border-gray-100">沙巴体育</th>
+                            <th class="border-r border-gray-100">BTI体育</th>
+                            <th class="border-r border-gray-100">IM电竞</th>
+                            <th>彩票</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100 my-level">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 0
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.5%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.5%</td>
+                            <td class="border-r border-gray-100">0.5%</td>
+                            <td class="border-r border-gray-100">0.5%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td>0.8%</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 even-row">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 1
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.6%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td>0.9%</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 2
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.7%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td>1.0%</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 even-row">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 3
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.8%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td>1.1%</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 4
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100">1.0%</td>
+                            <td class="border-r border-gray-100">1.0%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">1.0%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">0.9%</td>
+                            <td class="border-r border-gray-100">1.0%</td>
+                            <td>1.2%</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 even-row">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 5
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100 highlight">1.2%</td>
+                            <td class="border-r border-gray-100 highlight">1.2%</td>
+                            <td class="border-r border-gray-100 highlight">1.1%</td>
+                            <td class="border-r border-gray-100 highlight">1.2%</td>
+                            <td class="border-r border-gray-100 highlight">1.1%</td>
+                            <td class="border-r border-gray-100 highlight">1.1%</td>
+                            <td class="border-r border-gray-100 highlight">1.1%</td>
+                            <td class="border-r border-gray-100 highlight">1.2%</td>
+                            <td class="highlight">1.5%</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-gem"></i> VIP 6
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100 highlight">1.5%</td>
+                            <td class="border-r border-gray-100 highlight">1.5%</td>
+                            <td class="border-r border-gray-100 highlight">1.3%</td>
+                            <td class="border-r border-gray-100 highlight">1.5%</td>
+                            <td class="border-r border-gray-100 highlight">1.3%</td>
+                            <td class="border-r border-gray-100 highlight">1.3%</td>
+                            <td class="border-r border-gray-100 highlight">1.3%</td>
+                            <td class="border-r border-gray-100 highlight">1.5%</td>
+                            <td class="highlight">1.8%</td>
+                        </tr>
+                        <tr class="even-row">
+                            <td class="first-col border-r border-gray-100 bg-gray-50">
+                                <span class="vip-badge">
+                                    <i class="fas fa-crown"></i> VIP 7
+                                </span>
+                            </td>
+                            <td class="border-r border-gray-100 highlight">1.8%</td>
+                            <td class="border-r border-gray-100 highlight">1.8%</td>
+                            <td class="border-r border-gray-100 highlight">1.6%</td>
+                            <td class="border-r border-gray-100 highlight">1.8%</td>
+                            <td class="border-r border-gray-100 highlight">1.6%</td>
+                            <td class="border-r border-gray-100 highlight">1.6%</td>
+                            <td class="border-r border-gray-100 highlight">1.6%</td>
+                            <td class="border-r border-gray-100 highlight">1.8%</td>
+                            <td class="highlight">2.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- 返水计算器 -->
+        <div class="light-card mb-4">
+            <div class="p-4 border-b border-gray-100">
+                <h3 class="text-base font-bold text-gray-800">返水计算器</h3>
+            </div>
+            <div class="p-4">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">投注金额</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500">¥</span>
+                        </div>
+                        <input type="number" class="block w-full pl-7 pr-12 py-2.5 border border-gray-300 rounded-lg focus:ring-primary-light focus:border-primary-light" placeholder="输入投注金额">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">游戏类型</label>
+                    <select class="block w-full py-2.5 px-3 border border-gray-300 rounded-lg focus:ring-primary-light focus:border-primary-light">
+                        <option>JDB电子</option>
+                        <option>AG真人</option>
+                        <option>开元棋牌</option>
+                        <option>BBIN视讯</option>
+                        <option>OB体育</option>
+                        <option>沙巴体育</option>
+                        <option>BTI体育</option>
+                        <option>IM电竞</option>
+                        <option>彩票</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between bg-[#fff8f2] p-3 rounded-lg border border-[#ffe0d0]">
+                    <div>
+                        <span class="text-sm text-gray-600">预计返水金额</span>
+                        <div class="text-lg font-bold text-primary-light">¥0.00</div>
+                    </div>
+                    <button class="bg-gradient-to-r from-[#ff6902] to-[#ff4922] py-2 px-4 rounded-lg text-sm font-medium text-white">
+                        计算返水
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 常见问题 -->
+        <div class="light-card mb-4">
+            <div class="p-4 border-b border-gray-100">
+                <h3 class="text-base font-bold text-gray-800">常见问题</h3>
+            </div>
+            <div class="divide-y divide-gray-100">
+                <div class="p-4">
+                    <div class="flex justify-between items-center cursor-pointer">
+                        <h4 class="text-sm font-medium text-gray-700">返水何时到账？</h4>
+                        <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        每日12:00系统会自动结算前一日的返水，满10元自动派发到您的账户中。
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-center cursor-pointer">
+                        <h4 class="text-sm font-medium text-gray-700">如何提升返水比例？</h4>
+                        <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        提升VIP等级可获得更高的返水比例。您可以通过增加存款和投注流水来升级VIP等级。
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部信息 -->
+        <div class="text-xs text-gray-500 px-4 mb-20">
+            <p>* 返水比例与规则最终解释权归平台所有</p>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2">
+        <div class="max-w-md mx-auto flex justify-around">
+            <button class="flex flex-col items-center px-3">
+                <i class="fas fa-gamepad text-gray-400 text-lg"></i>
+                <span class="text-xs text-gray-500 mt-1">游戏</span>
+            </button>
+            <button class="flex flex-col items-center px-3">
+                <i class="fas fa-gift text-gray-400 text-lg"></i>
+                <span class="text-xs text-gray-500 mt-1">福利</span>
+            </button>
+            <button class="flex flex-col items-center px-3">
+                <i class="fas fa-comment-dots text-gray-400 text-lg"></i>
+                <span class="text-xs text-gray-500 mt-1">会话</span>
+            </button>
+            <button class="flex flex-col items-center px-3">
+                <i class="fas fa-user text-primary-light text-lg"></i>
+                <span class="text-xs text-primary-light mt-1">我的</span>
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // 简易返水计算器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const amountInput = document.querySelector('input[type="number"]');
+            const gameTypeSelect = document.querySelector('select');
+            const calcButton = document.querySelector('button');
+            const resultDisplay = document.querySelector('.text-lg.font-bold');
+            
+            calcButton.addEventListener('click', function() {
+                const amount = parseFloat(amountInput.value) || 0;
+                const gameType = gameTypeSelect.value;
+                let rate = 0.006; // 默认VIP0的JDB电子返水比例
+                
+                // 根据游戏类型设置不同比例（这里简化处理）
+                if (gameType === '彩票') {
+                    rate = 0.008;
+                } else if (gameType === '开元棋牌' || gameType === 'OB体育' || 
+                           gameType === '沙巴体育' || gameType === 'BTI体育') {
+                    rate = 0.005;
+                }
+                
+                const rebate = amount * rate;
+                resultDisplay.textContent = `¥${rebate.toFixed(2)}`;
+            });
+        });
+    </script>
+</body>
+</html>
